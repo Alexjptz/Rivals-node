@@ -137,7 +137,7 @@ while true; do
             # Starting Rivalz Node
             echo "Запускаем ноду в screen сессии (Starting Rivalz Node)..."
             sleep 1
-            screen -S rivalz_node -X stuff "rivalz run\n"; then
+            if screen -S rivalz_node -X stuff "rivalz run\n"; then
                 sleep 1
                 echo -e "Нода в screen сессии запущена (Rivalz Node Started): Успешно (\e[32mSuccess\e[0m)"
                 echo ""
