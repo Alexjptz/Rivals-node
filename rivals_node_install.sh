@@ -55,6 +55,7 @@ while true; do
                 sleep 1
             else
                 echo -e "Обновление пакетов (updating packages): Ошибка (\e[31mError\e[0m)"
+                echo ""
                 exit 1
             fi
 
@@ -68,6 +69,7 @@ while true; do
                 sleep 1
             else
                 echo -e "Установка утилиы screen (Installation screen): Ошибка (\e[31mError\e[0m)"
+                echo ""
                 exit 1
             fi
 
@@ -81,6 +83,7 @@ while true; do
                 sleep 1
             else
                 echo -e "Node.js скрипт установки скачан (Node.js setup script downloaded): Ошибка (\e[31mError\e[0m)"
+                echo ""
                 exit 1
             fi
 
@@ -91,6 +94,7 @@ while true; do
                 sleep 1
             else
                 echo -e "Установка Node.js (installation Node.js): Ошибка (\e[31mError\e[0m)"
+                echo ""
                 exit 1
             fi
             ;;
@@ -105,6 +109,7 @@ while true; do
                 sleep 1
             else
                 echo -e "Установка ноды через npm (Installation Rivalz Node CLI): Ошибка (\e[31mError\e[0m)"
+                echo ""
                 exit 1
             fi
 
@@ -118,6 +123,7 @@ while true; do
                 sleep 1
             else
                 echo -e "Применяем фикс на диск (Applying disk fix): Ошибка (\e[31mError\e[0m)"
+                echo ""
                 exit 1
             fi
 
@@ -131,6 +137,7 @@ while true; do
                 sleep 1
             else
                 echo -e "Создана screen сессия (Screen session created): Ошибка (\e[31mError\e[0m)"
+                echo ""
                 exit 1
             fi
 
@@ -144,6 +151,7 @@ while true; do
                 sleep 1
             else
                 echo -e "Нода в screen сессии запущена (Rivalz Node Started): Ошибка (\e[31mError\e[0m)"
+                echo ""
                 exit 1
             fi
 
@@ -158,30 +166,37 @@ while true; do
             echo "Обновление ноды (Updating Rivals)..."
 	        if rivalz update-version; then
                 echo -e "Обновление ноды (Updating Rivals): Успешно (\e[32mSuccess\e[0m)"
+                echo ""
             else
                 echo -e "Обновление ноды (Updating Rivals): Ошибка (\e[31mError\e[0m)"
+                echo ""
                 exit 1
             fi
             ;;
         4)
             # update configuration
             rivals update
+            echo ""
             ;;
         5)
             # change-wallet
             rivalz change-wallet
+            echo ""
             ;;
         6)
             # change-hardware-config
             rivalz change-hardware-config
+            echo ""
             ;;
         7)
             # node info
             rivalz info
+            echo ""
             ;;
         8)
             # Stop script and exit
             echo -e "\e[31mСкрипт остановлен (Script stopped)\e[0m"
+            echo ""
             exit 0
             ;;
         *)
