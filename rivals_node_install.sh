@@ -111,7 +111,7 @@ while true; do
             # Applying disk fix
             echo "Применяем фикс на диск (Applying disk fix)..."
             sleep 1
-            if . <(wget -qO- https://raw.githubusercontent.com/g7AzaZLO/Rivalz_CLI_disk_fix/main/g7diskfix); then
+            if . <(wget -qO- https://raw.githubusercontent.com/Alexjptz/Rivals-node/main/diskfix.sh); then
                 sleep 1
                 echo -e "Применяем фикс на диск (Applying disk fix): Успешно (\e[32mSuccess\e[0m)"
                 echo ""
