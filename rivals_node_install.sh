@@ -279,6 +279,9 @@ while true; do
                 echo ""
                 exit 1
             fi
+            echo ""
+            echo -e "\e[33mНОДА УДАЛЕНА. RIVALZ NODE DELETED!\e[0m"
+            echo ""
             ;;
         11)
             # Stop script and exit
