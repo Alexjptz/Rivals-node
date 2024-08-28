@@ -100,6 +100,8 @@ while true; do
                 echo ""
                 exit 1
             fi
+            echo ""
+            echo -e "\e[33m---- ПОДГОТОВКА ЗАВЕРШЕНА. PREPARATION COMPLETED ----\e[0m"
             ;;
         2)
             # Installing Rivalz Node CLI
@@ -183,7 +185,7 @@ while true; do
 
             echo ""
             echo -e "\e[32m----------- SUCCESS!!! ----------\e[0m"
-            echo -e "Rivalz Node has been successfully installed!"
+            echo -e "\e[33mНОДА УСТАНОВЛЕНА. RIVALZ NODE INSTALLED!\e[0m"
             echo ""
             echo -e "\n Подпишись на мой канал Beloglazov invest, \n чтобы быть в курсе самых актуальных нод и активностей \n https://t.me/beloglazovinvest\n"
             ;;
