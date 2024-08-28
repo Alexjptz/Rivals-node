@@ -119,7 +119,7 @@ while true; do
             # Applying disk fix
             echo "Применяем фикс на диск (Applying disk fix)..."
             sleep 1
-            FILE="/usr/lib/node_modules/rivalz-node-cli/node_modules/systeminformation/lib/filesystem.js"; then
+            FILE="/usr/lib/node_modules/rivalz-node-cli/node_modules/systeminformation/lib/filesystem.js"
 
             # Function to find the correct file path
             find_file_path() {
@@ -211,7 +211,7 @@ while true; do
         5)
             # Closing screen session 'rivalz_node'...
             echo "Удаляем сессию. (Closing screen session 'rivalz_node')..."
-            screen -S rivalz_node -X quit; then
+            if screen -S rivalz_node -X quit; then
                 sleep 1
                 echo -e "Screen сессия удалена (Screen session closed): Успешно (\e[32mSuccess\e[0m)"
                 echo ""
@@ -250,20 +250,8 @@ while true; do
             echo ""
             ;;
         10)
-            # Remove soft and node
-            # 1. Removing Node.js
-            echo "Удаляем Node.js. (Removing Node.js)..."
-            if sudo apt remove --purge -y nodejs; then
-                sleep 1
-                echo -e "Node.js. удален (Node.js Removed): Успешно (\e[32mSuccess\e[0m)"
-                echo ""
-                sleep 1
-            else
-                echo -e "Node.js. удален (Node.js Removed): Ошибка (\e[31mError\e[0m)"
-                echo ""
-                exit 1
-            fi
 
+            # Remove soft and node
             # Removing Rivalz Node CLI...
             echo "Удаление ноды. (Removing Rivalz Node CLI)..."
             if sudo npm uninstall -g rivalz-node-cli; then
@@ -273,6 +261,19 @@ while true; do
                 sleep 1
             else
                 echo -e "Удаление ноды. (Removing Rivalz Node CLI): Ошибка (\e[31mError\e[0m)"
+                echo ""
+                exit 1
+            fi
+
+            # Removing Node.js
+            echo "Удаляем Node.js. (Removing Node.js)..."
+            if sudo apt remove --purge -y nodejs; then
+                sleep 1
+                echo -e "Node.js. удален (Node.js Removed): Успешно (\e[32mSuccess\e[0m)"
+                echo ""
+                sleep 1
+            else
+                echo -e "Node.js. удален (Node.js Removed): Ошибка (\e[31mError\e[0m)"
                 echo ""
                 exit 1
             fi
