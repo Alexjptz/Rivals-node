@@ -2,7 +2,7 @@
 tput reset
 tput civis
 
-echo -e "\e[40m\e[32m"
+echo -e "\e[33m"
 echo -e '----------_____--------------------_____----------------_____----------'
 echo -e '---------/\----\------------------/\----\--------------/\----\---------'
 echo -e '--------/::\____\----------------/::\----\------------/::\----\--------'
@@ -34,12 +34,15 @@ sleep 2
 while true; do
     echo "1. Подготовка у установке Rivals (Preparation)"
     echo "2. Установка Rivals (Install)"
-    echo "3. Обновить Rivals (Update)"
-    echo "4. Обновить конфигурацию (Configuration update)"
-    echo "5. Изменить кошелек (Change wallet)"
-    echo "6. Поменять потребляемое место на диске (Change the disk usage)"
-    echo "7. Инфо о ноде (Node info)"
-    echo "8. Выход (Exit)"
+    echo "3. Создать screen сессию (Create screen session)"
+    echo "4. Запустить ноду (Start Node)"
+    echo "5. Удалить сессию Rivals (Close Rival session)"
+    echo "6. Обновить Rivals (Update)"
+    echo "7. Изменить кошелек (Change wallet)"
+    echo "8. Поменять потребляемое место на диске (Change the disk usage)"
+    echo "9. Инфо о ноде (Node info)"
+    echo "10. Удалить Rivals (Delete Node)"
+    echo "11. Выход (Exit)"
     echo ""
     read -p "Выберите опцию (Select option): " option
 
@@ -116,8 +119,59 @@ while true; do
             # Applying disk fix
             echo "Применяем фикс на диск (Applying disk fix)..."
             sleep 1
-            if . <(wget -qO- https://raw.githubusercontent.com/Alexjptz/Rivals-node/main/diskfix.sh); then
-                sleep 1
+            FILE="/usr/lib/node_modules/rivalz-node-cli/node_modules/systeminformation/lib/filesystem.js"; then
+
+            # Function to find the correct file path
+            find_file_path() {
+            local search_path="$1"
+            find "$search_path" -type f -name "filesystem.js" 2>/dev/null | grep "systeminformation/lib/filesystem.js" | head -n 1
+            }
+
+            # Check if the file exists
+            if [ ! -f "$FILE" ]; then
+            echo "File not found at $FILE. Attempting to locate it..."
+            FILE=$(find_file_path "/usr/lib")
+
+            if [ -z "$FILE" ]; then
+                FILE=$(find_file_path "/usr/local/lib")
+            fi
+
+            if [ -z "$FILE" ]; then
+                FILE=$(find_file_path "/opt")
+            fi
+
+            if [ -z "$FILE" ]; then
+                # Adding check for ~/.nvm path
+                FILE=$(find_file_path "$HOME/.nvm")
+            fi
+
+            if [ -z "$FILE" ]; then
+                echo "Error: filesystem.js not found. Make sure npm is installed and the file path is correct."
+                exit 1
+            fi
+
+            echo "File found at $FILE"
+            fi
+
+            # Create a temporary file
+            TMP_FILE=$(mktemp)
+
+            # Define the original line and the replacement line
+            ORIGINAL_LINE="devices = outJSON.blockdevices.filter(item => { return (item.type === 'disk') && item.size > 0 && (item.model !== null || (item.mountpoint === null && item.label === null && item.fstype === null && item.parttype === null && item.path && item.path.indexOf('/ram') !== 0 && item.path.indexOf('/loop') !== 0 && item['disc-max'] && item['disc-max'] !== 0)); });"
+            NEW_LINE="devices = outJSON.blockdevices.filter(item => { return (item.type === 'disk') && item.size > 0 }).sort((a, b) => b.size - a.size);"
+
+            # Read through the file line by line
+            while IFS= read -r line
+            do
+            if [[ "$line" == *"$ORIGINAL_LINE"* ]]; then
+                echo "$NEW_LINE" >> "$TMP_FILE"
+            else
+                echo "$line" >> "$TMP_FILE"
+            fi
+            done < "$FILE"
+
+            # Replace the original file with the modified one
+            if mv "$TMP_FILE" "$FILE"; then
                 echo -e "Применяем фикс на диск (Applying disk fix): Успешно (\e[32mSuccess\e[0m)"
                 echo ""
                 sleep 1
@@ -127,6 +181,13 @@ while true; do
                 exit 1
             fi
 
+            echo ""
+            echo -e "\e[32m----------- SUCCESS!!! ----------\e[0m"
+            echo -e "Rivalz Node has been successfully installed!"
+            echo ""
+            echo -e "\n Подпишись на мой канал Beloglazov invest, \n чтобы быть в курсе самых актуальных нод и активностей \n https://t.me/beloglazovinvest\n"
+            ;;
+        3)
             # Creating screen session
             echo "Создаем screen сессию (Creating screen session)..."
             sleep 1
@@ -140,28 +201,28 @@ while true; do
                 echo ""
                 exit 1
             fi
-
-            # Starting Rivalz Node
-            echo "Запускаем ноду в screen сессии (Starting Rivalz Node)..."
+            ;;
+        4)
+            #start node
+            echo "Запускаем ноду. (Starting the node)..."
             sleep 1
-            if screen -S rivalz_node -X stuff "rivalz run\n"; then
+            screen -S rivalz_node -X stuff "rivalz run$(echo -ne '\r')"
+            ;;
+        5)
+            # Closing screen session 'rivalz_node'...
+            echo "Удаляем сессию. (Closing screen session 'rivalz_node')..."
+            screen -S rivalz_node -X quit; then
                 sleep 1
-                echo -e "Нода в screen сессии запущена (Rivalz Node Started): Успешно (\e[32mSuccess\e[0m)"
+                echo -e "Screen сессия удалена (Screen session closed): Успешно (\e[32mSuccess\e[0m)"
                 echo ""
                 sleep 1
             else
-                echo -e "Нода в screen сессии запущена (Rivalz Node Started): Ошибка (\e[31mError\e[0m)"
+                echo -e "Screen сессия удалена (Screen session closed): Ошибка (\e[31mError\e[0m)"
                 echo ""
                 exit 1
             fi
-
-            echo ""
-            echo -e "\e[32m----------------- SUCCESS!!! ----------------\e[0m"
-            echo -e "Rivalz Node has been successfully installed and started!"
-            echo ""
-            echo -e "\n Подпишись на мой канал Beloglazov invest, \n чтобы быть в курсе самых актуальных нод и активностей \n https://t.me/beloglazovinvest\n"
             ;;
-        3)
+        6)
             # Update Rivals
             echo "Обновление ноды (Updating Rivals)..."
 	        if rivalz update-version; then
@@ -173,27 +234,50 @@ while true; do
                 exit 1
             fi
             ;;
-        4)
-            # update configuration
-            rivals update
-            echo ""
-            ;;
-        5)
+        7)
             # change-wallet
             rivalz change-wallet
             echo ""
             ;;
-        6)
+        8)
             # change-hardware-config
             rivalz change-hardware-config
             echo ""
             ;;
-        7)
+        9)
             # node info
             rivalz info
             echo ""
             ;;
-        8)
+        10)
+            # Remove soft and node
+            # 1. Removing Node.js
+            echo "Удаляем Node.js. (Removing Node.js)..."
+            if sudo apt remove --purge -y nodejs; then
+                sleep 1
+                echo -e "Node.js. удален (Node.js Removed): Успешно (\e[32mSuccess\e[0m)"
+                echo ""
+                sleep 1
+            else
+                echo -e "Node.js. удален (Node.js Removed): Ошибка (\e[31mError\e[0m)"
+                echo ""
+                exit 1
+            fi
+
+            # Removing Rivalz Node CLI...
+            echo "Удаление ноды. (Removing Rivalz Node CLI)..."
+            if sudo npm uninstall -g rivalz-node-cli; then
+                sleep 1
+                echo -e "Удаление ноды. (Removing Rivalz Node CLI): Успешно (\e[32mSuccess\e[0m)"
+                echo ""
+                sleep 1
+            else
+                echo -e "Удаление ноды. (Removing Rivalz Node CLI): Ошибка (\e[31mError\e[0m)"
+                echo ""
+                exit 1
+            fi
+            ;;
+        11)
             # Stop script and exit
             echo -e "\e[31mСкрипт остановлен (Script stopped)\e[0m"
             echo ""
